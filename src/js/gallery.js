@@ -1,0 +1,22 @@
+import { getPhotos } from './unsplesh-api';
+import { refs } from './refs';
+import { createMarkup } from './create-markup';
+
+const onFormSubmit = async event => {
+  event.preventDefault();
+
+  const searchedQuery =
+    event.currentTarget.elements['user-search-query'].value.trim();
+
+  const page = 1;
+
+  try {
+    const { results, total } = await getPhotos(searchedQuery, page);
+
+    refs.galleryList.innerHTML = createMarkup(results);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+refs.form.addEventListener('submit', onFormSubmit);
